@@ -2,15 +2,24 @@
 import React, { CSSProperties } from 'react';
 
 // Components
+import { FreeCounter } from "@/components/free-counter";
 import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
-import { LayoutDashboard, MessageSquare, ImageIcon, VideoIcon, Music, Code, Settings } from "lucide-react";
+import {
+    LayoutDashboard,
+    MessageSquare,
+    ImageIcon,
+    VideoIcon,
+    Settings,
+    Music,
+    Code
+} from "lucide-react";
 
 // Hooks
 import { usePathname } from "next/navigation"
 
-// CSS
+// Utils
 import { cn } from "@/lib/utils";
 
 const montserrat = Montserrat({weight: "600", subsets: ["latin"]})
@@ -59,7 +68,13 @@ const routes = [
     },
 ]
 
-const Sidebar = () => {
+interface SidebarProps {
+    apiLimitCount: number;
+}
+
+const Sidebar = ({
+    apiLimitCount = 0,
+}: SidebarProps) => {
     const headingStyles: CSSProperties = {
         background: 'linear-gradient(to right, #CEAFEB 4%, #EFDFB4 100%)',
         WebkitBackgroundClip: 'text',
@@ -94,6 +109,9 @@ const Sidebar = () => {
                     ))}
                 </div>
             </div>
+            <FreeCounter 
+                apiLimitCount={apiLimitCount}
+            />
         </div>
     )
 }
