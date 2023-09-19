@@ -5,6 +5,8 @@ import * as z from "zod";
 
 // Components
 import { Heading } from "@/components/heading";
+import { Empty } from "@/components/empty";
+import { Loader } from "@/components/loader";
 import { MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -112,10 +114,13 @@ const ConversationPage = () => {
                     </Form>
                 </div>
                 <div className="space-y-4 mt-4">
-                    {messages.length == 0 && !isLoading && (
-                        <div>
-                            Empty
+                    {isLoading && (
+                        <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted animate-pulse">
+                            <Loader />
                         </div>
+                    )}
+                    {messages.length == 0 && !isLoading && (
+                        <Empty label="No conversation started."/>
                     )}
                    <div className="flex flex-col-reverse gap-y-4">
                         {messages.map((message) => (
