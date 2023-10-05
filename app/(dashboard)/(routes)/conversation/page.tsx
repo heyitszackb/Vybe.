@@ -24,6 +24,7 @@ import { BotAvatar } from "@/components/bot-avatar";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 // Constants and Utils
 import { formSchema } from "./constants"
@@ -37,6 +38,7 @@ import { ChatCompletionMessage } from "openai/resources/chat/index.mjs";
 
 
 const ConversationPage = () => {
+    const proModal = useProModal();
     const router = useRouter();
     const [messages, setMessages] = useState<Array<ChatCompletionMessage>>([]);
 
@@ -67,8 +69,9 @@ const ConversationPage = () => {
 
             form.reset();
         } catch (error: any) {
-            // TODO: Open Pro Modal
-            console.log(error);
+            if (error?.response?.status == 403) {
+                proModal.onOpen();
+            }
         } finally {
             router.refresh();
         }

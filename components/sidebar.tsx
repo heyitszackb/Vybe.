@@ -13,7 +13,8 @@ import {
     VideoIcon,
     Settings,
     Music,
-    Code
+    Code,
+    PlusSquare,
 } from "lucide-react";
 
 // Hooks
@@ -26,7 +27,13 @@ const montserrat = Montserrat({weight: "600", subsets: ["latin"]})
 
 const routes = [
     {
-        label: "Dashboard",
+    label: "Create",
+    icon: PlusSquare,
+    href: "/create",
+    color: "text-sky-500",
+    },
+    {
+    label: "Dashboard",
     icon: LayoutDashboard,
     href: "/dashboard",
     color: "text-sky-500",

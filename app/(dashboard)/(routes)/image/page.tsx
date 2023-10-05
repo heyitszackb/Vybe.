@@ -31,6 +31,7 @@ import { ImageIcon, Download } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 // Constants and Utils
 import {
@@ -38,7 +39,6 @@ import {
     formSchema,
     resolutionOptions,
 } from "./constants"
-import { cn } from "@/lib/utils"
 
 
 // Other
@@ -47,6 +47,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 
 const ImagePage = () => {
+    const proModal = useProModal();
     const router = useRouter();
     const [images, setImages] = useState<string[]>([]);
 
@@ -80,8 +81,9 @@ const ImagePage = () => {
 
             form.reset();
         } catch (error: any) {
-            // TODO: Open Pro Modal
-            // console.log(error);
+            if (error?.response?.status == 403) {
+                proModal.onOpen();
+            }
         } finally {
             router.refresh();
         }
