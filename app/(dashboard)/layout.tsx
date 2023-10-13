@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar"
+import Navbar from "@/components/Navbar/navbar"
 import Sidebar from "@/components/sidebar"
 import { getApiLimitCount } from "@/lib/api-limit";
 
