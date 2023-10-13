@@ -1,13 +1,23 @@
 import type { Songs, Song } from "@/app/types/types";
 import { VybeError } from "./types";
 import naturalLanguageInputParser from "./NaturalLanguageInputParser/natural-language-input-parser";
+import { initialSpotifyInfoFetcher } from "./SpotifyInfoFetcher/initial-spotify-info-fetcher";
 
 export default async function textToSpotifySongListConverter(prompt: string) {
-  const data = await naturalLanguageInputParser(prompt);
+  // const data = await naturalLanguageInputParser(prompt);
+  // if (data instanceof VybeError) {
+  //   console.log("HEY!",data);
+  // }
+  // console.log(data);
+
+  const data = await initialSpotifyInfoFetcher(prompt);
   if (data instanceof VybeError) {
     console.log("HEY!",data);
   }
   console.log(data);
+
+
+
 
     const songs: Songs  = [
         {

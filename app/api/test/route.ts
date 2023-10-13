@@ -13,7 +13,6 @@ export async function GET(
         const { prompt } = body;
 
         const res = await initialPromptExpander(prompt);
-        console.log(res)
 
         return NextResponse.json(res)
 

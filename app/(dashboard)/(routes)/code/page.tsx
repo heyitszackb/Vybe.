@@ -64,8 +64,6 @@ const CodePage = () => {
                 messages: newMessages,
             })
 
-            console.log("RES:",response)
-
             setMessages((current) => [...current, userMessage, response.data])
 
             form.reset();

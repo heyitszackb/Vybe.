@@ -65,7 +65,6 @@ const ImagePage = () => {
     }, []);
 
     const formErrors = form.formState.errors;
-    console.log(formErrors);
 
     const isLoading = form.formState.isSubmitting;
 

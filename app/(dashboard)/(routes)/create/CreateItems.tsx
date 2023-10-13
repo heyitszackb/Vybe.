@@ -18,7 +18,6 @@ interface CreateItemsProps {
 
 
 const CreateItems: React.FC<CreateItemsProps> = ({ songs, isLoading }) => {
-    console.log("SONGS:",songs);
     return (
         <div className="space-y-4 mt-4">
         {isLoading && (

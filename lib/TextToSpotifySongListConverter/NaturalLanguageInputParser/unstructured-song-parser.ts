@@ -27,7 +27,6 @@ export default async function unstructuredSongParser(unstructuredSongList: strin
     try {
         parsedOutput = await parser.parse(stringOutput);
     } catch (e: any) {
-        console.log("why, hello there!")
         return new VybeError(e.status, e.message, input);
     }
 

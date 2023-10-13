@@ -19,8 +19,6 @@ export default async function naturalLanguageInputParser(userInput: string): Pro
         return unstructuredSongList;
     }
 
-    console.log("test")
-
     const structuredSongList = await unstructuredSongParser(unstructuredSongList);
     if (structuredSongList instanceof VybeError) {
         return structuredSongList;

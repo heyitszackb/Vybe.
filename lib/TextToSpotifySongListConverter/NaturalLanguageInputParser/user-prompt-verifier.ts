@@ -40,7 +40,6 @@ export default async function userPromptVerifier(userInput: string): Promise<str
         partialVariables: {"format_instructions": parser.getFormatInstructions()},
         });
 
-    console.log("yserPromptVerifier")
 
     const input: string = await prompt.format({
         instructions,
