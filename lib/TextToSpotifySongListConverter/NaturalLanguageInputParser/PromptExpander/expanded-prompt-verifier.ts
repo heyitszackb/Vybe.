@@ -1,9 +1,9 @@
 import { model } from "@/lib/TextToSpotifySongListConverter/globals";
 import { PromptTemplate } from "langchain/prompts";
 import { VybeError } from "../../types";
-import handleModelCall from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
+import { handleModelCall } from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
 import { StructuredOutputParser } from "langchain/output_parsers";
-import { BooleanResponse } from "@/lib/TextToSpotifySongListConverter/types";
+import { BooleanResponseSchema } from "@/lib/TextToSpotifySongListConverter/types";
 
 
 export default async function expandedPromptVerifier(expandedPrompt: string): Promise<string | VybeError> {
@@ -34,7 +34,7 @@ export default async function expandedPromptVerifier(expandedPrompt: string): Pr
     }
 
     // Here, yesOrNoOrError is a string of either 'yes' or 'no'
-    const parser = StructuredOutputParser.fromZodSchema(BooleanResponse);
+    const parser = StructuredOutputParser.fromZodSchema(BooleanResponseSchema);
 
     let prompt2 = new PromptTemplate({
         template: "Answer the user query.\n{formatInstructions}\n USER_RESPONSE: [{response}]\n",

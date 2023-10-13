@@ -1,7 +1,7 @@
 import { model } from "@/lib/TextToSpotifySongListConverter/globals";
 import { PromptTemplate } from "langchain/prompts";
 import { VybeError } from "../../types";
-import handleModelCall from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
+import { handleModelCall } from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
 
 
 export default async function initialPromptExpander(verifiedInitialPrompt: string): Promise<string | VybeError> {

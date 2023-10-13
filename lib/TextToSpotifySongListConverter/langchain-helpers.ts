@@ -1,7 +1,7 @@
 import { VybeError } from "./types";
 import { model } from "./globals";
 
-export default async function handleModelCall(input: string): Promise<string | VybeError> {
+export async function handleModelCall(input: string): Promise<string | VybeError> {
     try {
         const res: string = await model.call(input);
         return res;

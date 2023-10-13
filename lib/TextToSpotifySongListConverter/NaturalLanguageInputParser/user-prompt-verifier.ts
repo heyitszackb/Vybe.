@@ -1,9 +1,8 @@
-import { model } from "@/lib/TextToSpotifySongListConverter/globals";
 import { PromptTemplate } from "langchain/prompts";
 import { VybeError } from "@/lib/TextToSpotifySongListConverter/types"
-import handleModelCall from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
+import { handleModelCall } from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
 import { StructuredOutputParser } from "langchain/output_parsers";
-import { UserInput } from "@/lib/TextToSpotifySongListConverter/types";
+import { UserInputSchema } from "@/lib/TextToSpotifySongListConverter/types";
 
 
 export default async function userPromptVerifier(userInput: string): Promise<string | VybeError> {
@@ -33,17 +32,19 @@ export default async function userPromptVerifier(userInput: string): Promise<str
     An input is acceptable if it can be fed into my system as a valid mood/vibe. An input is unacceptable if it cannot.
     User query: Is the following input acceptable or unacceptable:`
 
-    const parser = StructuredOutputParser.fromZodSchema(UserInput);
+    const parser = StructuredOutputParser.fromZodSchema(UserInputSchema);
 
     let prompt = new PromptTemplate({
-        template: "Answer the user query. {format_instructions} {instructions}\n *{user_input}*",
+        template: "Answer the user query. {format_instructions} {instructions}\n *{userInput}*",
         inputVariables: ["instructions","userInput"],
         partialVariables: {"format_instructions": parser.getFormatInstructions()},
         });
 
+    console.log("yserPromptVerifier")
+
     const input: string = await prompt.format({
-        instructions: instructions,
-        userInput: userInput,
+        instructions,
+        userInput
     });
 
     const stringOutput = await handleModelCall(input);
@@ -52,7 +53,8 @@ export default async function userPromptVerifier(userInput: string): Promise<str
     }
     let parsedOutput;
 
-    
+
+
 
     try {
         parsedOutput = await parser.parse(stringOutput);
@@ -61,11 +63,8 @@ export default async function userPromptVerifier(userInput: string): Promise<str
     }
 
     if (!parsedOutput.is_valid_input) {
-        return new VybeError("400", "Expanded prompt does not make semantic sense", userInput);
+        return new VybeError("400", "Initial user prompt does not make semantic sense", userInput);
     }
 
     return userInput;
-
-
-
 }

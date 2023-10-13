@@ -1,13 +1,9 @@
 import type { Songs, Song } from "@/app/types/types";
 import { VybeError } from "./types";
-import promptExpander from "./NaturalLanguageInputParser/PromptExpander/prompt-expander";
-
-// export const textToSpotifySongListConverter = async (prompt: string) => {
-//   return songs;
-// }
+import naturalLanguageInputParser from "./NaturalLanguageInputParser/natural-language-input-parser";
 
 export default async function textToSpotifySongListConverter(prompt: string) {
-  const data = await promptExpander('');
+  const data = await naturalLanguageInputParser(prompt);
   if (data instanceof VybeError) {
     console.log("HEY!",data);
   }

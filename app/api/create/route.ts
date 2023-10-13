@@ -24,8 +24,8 @@ export async function POST(
 
 
         await increaseApiLimit();
+        console.log(prompt)
         const songData = await textToSpotifySongListConverter(prompt);
-
         return NextResponse.json(songData)
 
     } catch (error) {
