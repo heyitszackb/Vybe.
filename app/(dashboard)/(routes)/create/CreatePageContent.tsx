@@ -18,11 +18,12 @@ import axios from "axios";
 
 // Types
 import { Songs, Song } from "@/app/types/types"; 
+import { VybeSong } from "@/lib/TextToSpotifySongListConverter/types";
 
 const CreatePageContent = () => {
   const proModal = useProModal();
   const router = useRouter();
-  const [songs, setSongs] = useState<Songs>([]);
+  const [songs, setSongs] = useState<VybeSong[]>([]);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,7 +56,7 @@ const onSubmit = async (values: FormValues) => {
 
       form.reset();
     } catch (error: any) {
-      if (error?.response?.status === 403) {
+      if (error?.response?.status === 403) { // TODO change to more specific error
         proModal.onOpen();
       }
     } finally {

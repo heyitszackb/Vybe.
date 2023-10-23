@@ -1,4 +1,4 @@
-import { VybeError, SongsAndArtists } from "../types";
+import { VybeError, SongAndArtist, SongsAndArtists } from "../types";
 import initialSongListGenerator from "./initial-song-list-generator";
 import unstructuredSongParser from "./unstructured-song-parser";
 import userPromptVerifier from "./user-prompt-verifier";
@@ -24,5 +24,5 @@ export default async function naturalLanguageInputParser(userInput: string): Pro
         return structuredSongList;
     }
 
-    return structuredSongList;
+    return structuredSongList as SongsAndArtists;
 }

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const SongSchema = z.object({
-  artist_name: z.string().min(1).describe("name of the artist"),
+  artists: z.array(z.string().min(1)).nonempty().describe("list of artists"),
   song_name: z.string().min(1).describe("name of the song"),
 });
 
@@ -38,7 +38,7 @@ class VybeError {
 export { VybeError };
 
 export type SongAndArtist = {
-  artist_name: string;
+  artists: string[];
   song_name: string;
 };
 
@@ -46,7 +46,7 @@ export type SongsAndArtists = {
   songs: SongAndArtist[];
 };
 
-interface SpotifySong {
+interface VybeSong {
   name: string;
   uri: string;
   artists: string[];
@@ -58,11 +58,23 @@ interface SpotifySong {
   spotifyUrl: string;
 };
 
-export type SpotifySongs = {
-  songs: SpotifySong[];
+// export type VybeSong = {
+//   name: string;
+//   uri: string;
+//   artists: string[];
+//   previewUrl: string | null;
+//   albumName: string;
+//   imageUrl: string;
+//   isExplicit: boolean;
+//   genres: string[];
+//   spotifyUrl: string;
+// };
+
+export type VybeSongs = {
+  songs: VybeSong[];
 };
 
-class SpotifySong {
+class VybeSong {
   name: string;
   uri: string;
   artists: string[];
@@ -96,4 +108,4 @@ class SpotifySong {
   }
 }
 
-export { SpotifySong };
+export { VybeSong };

@@ -6,4 +6,4 @@ export const NAVBAR_PAGE_NAMES: Record<string, string> = {
     "/music": "Music Generation",
     "/code": "Code Generation",
     "/create": "Create New",
-};
+}; // Todo make consistent

@@ -10,9 +10,10 @@ import { Loader } from "@/components/loader";
 
 // Types
 import { Songs, Song } from "@/app/types/types";
+import { VybeSong } from "@/lib/TextToSpotifySongListConverter/types";
 
 interface CreateItemsProps {
-    songs: Song[];
+    songs: VybeSong[];
     isLoading: boolean;
   }
 
@@ -30,16 +31,16 @@ const CreateItems: React.FC<CreateItemsProps> = ({ songs, isLoading }) => {
             {songs.map((song, i) => (
             <Card key={i} className="rounded-lg overflow-hidden">
                 <div className="relative aspect-square">
-                <Image alt="Image" fill src={song.image} />
+                <Image alt="Image" fill src={song.imageUrl} />
                 </div>
                 <CardFooter className="p-2">
                 <Button
                     variant="secondary"
                     className="w-full"
-                    // onClick={() => window.open(song.image)}
+                    onClick={() => { if (song.previewUrl) window.open(song.previewUrl)}}
                 >
                     <Download className="h-4 w-4 mr-2" />
-                    {song.song + " by " + song.artist[0]}
+                    {song.name + " by " + song.artists[0]}
                 </Button>
                 </CardFooter>
             </Card>

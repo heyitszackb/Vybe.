@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server";
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import textToSpotifySongListConverter from "@/lib/TextToSpotifySongListConverter/text-to-spotify-song-list-converter";
+import { VybeError } from "@/lib/TextToSpotifySongListConverter/types";
 
 export async function POST(
     req: Request,
@@ -24,8 +25,12 @@ export async function POST(
 
 
         await increaseApiLimit();
-        const songData = await textToSpotifySongListConverter(prompt);
-        return NextResponse.json(songData)
+        const songs = await textToSpotifySongListConverter(prompt);
+        if (songs instanceof VybeError) {
+            return new NextResponse(songs.reason + songs.input, { status: parseInt(songs.errorCode)})
+        }
+
+        return NextResponse.json(songs)
 
     } catch (error) {
         return new NextResponse("Internal error", { status: 500})
