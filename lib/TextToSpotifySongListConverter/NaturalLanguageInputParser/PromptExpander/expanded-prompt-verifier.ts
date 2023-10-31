@@ -62,11 +62,8 @@ export default async function expandedPromptVerifier(expandedPrompt: string): Pr
     }
 
     if (!parsedOutput.is_valid_input) {
-        return new VybeError("400", "Expanded prompt does not make semantic sense", expandedPrompt);
+        return new VybeError("400", "Expanded prompt does not make semantic sense for this application", expandedPrompt);
     }
 
     return expandedPrompt;
-
-
-
 }

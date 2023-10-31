@@ -1,8 +1,20 @@
+
+// Types
 import { VybeSongs, VybeSong, VybeError, SongsAndArtists } from "../types";
-import { getSpotifyApi } from "../spotify-helpers";
 import { PartialSearchResult, Track } from "@spotify/web-api-ts-sdk";
 
+// Utils
+import { getSpotifyApi } from "../spotify-helpers";
+
+// Constants
+import { USE_DUMMY_DATA } from "@/constants";
+import { dummySongs } from "../spotify-helpers";
+
 export async function initialSpotifyInfoFetcher(listOfSongsAndArtists: SongsAndArtists): Promise<VybeSong[] | VybeError> {
+    if (USE_DUMMY_DATA) {
+        return dummySongs;
+    }
+    
     const api = await getSpotifyApi();
     if (api instanceof VybeError) {
         return api;
@@ -19,9 +31,9 @@ export async function initialSpotifyInfoFetcher(listOfSongsAndArtists: SongsAndA
         } catch(e: any) {
             return new VybeError(e.status, e.message, query);
         }
-        if (checkOverlap(track.artists.map(artist => artist.name), songAndArtist.artists)) {
+        if (checkOverlap(track.artists.map(artist => artist.name), songAndArtist.artists) && track.preview_url) {
             vybeSongs.push(new VybeSong(
-                track.name, 
+                track.name,
                 track.uri,
                 track.artists.map(artist => artist.name),
                 track.preview_url,
@@ -31,8 +43,6 @@ export async function initialSpotifyInfoFetcher(listOfSongsAndArtists: SongsAndA
                 track.album.genres,
                 track.external_urls.spotify
                 ))
-        } else {
-            console.log("CAUGHT YOUUUUU")
         }
         
     }
@@ -43,9 +53,6 @@ export async function initialSpotifyInfoFetcher(listOfSongsAndArtists: SongsAndA
 function checkOverlap(arr1: string[], arr2: string[]): boolean {
     const lowercaseArr1 = arr1.map(artist => artist.toLowerCase());
     const lowercaseArr2 = arr2.map(artist => artist.toLowerCase());
-
-    console.log("ARR1", arr1)
-    console.log("ARR2", arr2)
 
     for (const artist of lowercaseArr1) {
         if (lowercaseArr2.includes(artist)) {

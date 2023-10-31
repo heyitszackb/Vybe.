@@ -5,27 +5,34 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useProModal } from "@/hooks/use-pro-modal";
+import { useCreatePage } from "./CreatePageContext";
 
 // Components
 import CreateForm from "./CreateForm";
 import CreateItems from "./CreateItems";
+import QueryBubble from "./QueryBubble";
 
 // Utils and Constants
-import { formSchema, amountOptions, resolutionOptions } from "./constants";
+import { initialFetchSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 
-
-// Types
-import { Songs, Song } from "@/app/types/types"; 
-import { VybeSong } from "@/lib/TextToSpotifySongListConverter/types";
-
 const CreatePageContent = () => {
+  const {
+    songs,
+    currentQuery,
+    selectedSongs,
+    setCurrentQuery,
+    setSongs,
+    setIsError,
+    setIsLoading,
+    setSelectedSongs,
+  } = useCreatePage();
+
   const proModal = useProModal();
   const router = useRouter();
-  const [songs, setSongs] = useState<VybeSong[]>([]);
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(initialFetchSchema),
     defaultValues: {
       prompt: "",
       amount: "1",
@@ -37,10 +44,6 @@ const CreatePageContent = () => {
     form.trigger();
   }, []);
 
-  const formErrors = form.formState.errors;
-
-  const isLoading = form.formState.isSubmitting;
-
 interface FormValues {
     prompt: string;
     amount: string;
@@ -49,33 +52,69 @@ interface FormValues {
 
 const onSubmit = async (values: FormValues) => {
     try {
+      setIsLoading(true);
+      setCurrentQuery('');
+      setIsError(false);
       setSongs([]);
+      setCurrentQuery(values.prompt);
       const response = await axios.post("/api/create", values);
 
       setSongs(response.data);
 
       form.reset();
     } catch (error: any) {
+      setIsError(true)
       if (error?.response?.status === 403) { // TODO change to more specific error
         proModal.onOpen();
       }
     } finally {
+      setIsLoading(false);
       router.refresh();
     }
   };
 
+  const onSubmitModify = async (values: FormValues) => {
+    try {
+      setSelectedSongs([]);
+      setIsLoading(true);
+      setCurrentQuery('');
+      setIsError(false);
+      setSongs([]);
+      setCurrentQuery(`More like ${selectedSongs.map((song) => `${song.name} by ${song.artists[0]}`).join(", ")}`);
+      const response = await axios.post("/api/modify", {
+        uris: selectedSongs.map((song) => song.uri.split(':').pop()!),
+      });
+
+      setSongs(response.data);
+
+      form.reset();
+    } catch (error: any) {
+      console.log(error)
+      setIsError(true)
+      if (error?.response?.status === 403) { // TODO change to more specific error
+        proModal.onOpen();
+      }
+    } finally {
+      setIsLoading(false);
+      router.refresh();
+    }
+  };
+
+
+
   return (
     <div>
-      {/* ... Other components (Heading, etc.) */}
       <div className="px-4 lg:px-8">
         <div>
           <CreateForm
             form={form}
-            isLoading={isLoading}
-            onSubmit={onSubmit}
+            onSubmit={selectedSongs.length > 0 ? onSubmitModify : onSubmit}
           />
         </div>
-        {songs && <CreateItems songs={songs} isLoading={isLoading} />}
+        {currentQuery && <QueryBubble />}
+        {/* {currentQuery && <SelectMoreBubble />} */}
+        <div>{selectedSongs.length}</div>
+        {songs && <CreateItems />}
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ interface VybeSong {
   name: string;
   uri: string;
   artists: string[];
-  previewUrl: string | null;
+  previewUrl: string;
   albumName: string;
   imageUrl: string;
   isExplicit: boolean;
@@ -78,7 +78,7 @@ class VybeSong {
   name: string;
   uri: string;
   artists: string[];
-  previewUrl: string | null;
+  previewUrl: string;
   albumName: string;
   imageUrl: string;
   isExplicit: boolean;
@@ -89,7 +89,7 @@ class VybeSong {
       name: string,
       uri: string,
       artists: string[],
-      previewUrl: string | null,
+      previewUrl: string,
       albumName: string,
       imageUrl: string,
       isExplicit: boolean,
