@@ -2,18 +2,20 @@ import Image from "next/image"
 
 interface PromptErrorProps {
     label: string;
+    imageUrl: string;
 }
 
 export const PromptError = ({
-    label
+    label,
+    imageUrl
 }: PromptErrorProps) => {
     return (
         <div className="h-3/6 flex flex-col items-center justify-center">
             <div className="relative h-72 w-72">
                 <Image 
-                    alt="Empty state image"
+                    alt="Error image"
                     fill
-                    src="/promptError.png"
+                    src={imageUrl}
                 />
             </div>
             <p className="text-muted-foreground text-sm text-center">

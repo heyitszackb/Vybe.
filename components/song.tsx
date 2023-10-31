@@ -3,6 +3,7 @@ import { VybeSong } from "@/lib/TextToSpotifySongListConverter/types";
 
 // Components
 import Image from "next/image";
+import { SquareAsterisk } from "lucide-react";
 
 // Hooks
 import { useRef } from "react";
@@ -14,6 +15,11 @@ interface SongProps {
     onSelect: (song: VybeSong) => void;
 }
 
+let trimString = function (string: string, length: number) {
+    return string.length > length ? 
+           string.substring(0, length) + '...' :
+           string;
+  };
 
 export const Song = ({
     song,
@@ -67,8 +73,9 @@ export const Song = ({
             <h3 className="font-medium truncate leading-none">
                 {song.name}
             </h3>
-            <p className="text-xs text-muted-foreground truncate mt-1">
-                {song.artists.join(", ")}
+            <p className="flex items-center text-xs text-muted-foreground truncate leading-none mt-1">
+                {song.isExplicit ? <SquareAsterisk size={14} className="inline-block" /> : null}
+                {trimString(song.artists.join(", "), 18)}
             </p>
         </div>
     )

@@ -26,7 +26,7 @@ const CreateItems = () => {
 
     return (
         <div className="space-y-4"> 
-        {isError && <PromptError label="Hey, we don't feel comfortable creating a playlist from that prompt. Go ahead and try something else!"/>}
+        {isError && <PromptError imageUrl="/promptError.png" label="Hey, we don't feel comfortable creating a playlist from that prompt. Go ahead and try something else!"/>}
         {isLoading && (
             <div className="p-20">
             <Loader />

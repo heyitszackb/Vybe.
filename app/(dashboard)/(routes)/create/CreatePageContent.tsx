@@ -1,7 +1,7 @@
 "use client";
 
 // Hooks
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useProModal } from "@/hooks/use-pro-modal";
@@ -16,6 +16,10 @@ import QueryBubble from "./QueryBubble";
 import { initialFetchSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { toast } from "react-hot-toast";
+
+// Types
+import { AxiosError } from 'axios';
 
 const CreatePageContent = () => {
   const {
@@ -63,9 +67,16 @@ const onSubmit = async (values: FormValues) => {
 
       form.reset();
     } catch (error: any) {
-      setIsError(true)
-      if (error?.response?.status === 403) { // TODO change to more specific error
+      console.log(error?.message);
+      setIsError(true);
+      if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else if (error?.response?.status === 400) {
+        toast.error("Invalid prompt");
+      } else if (error?.response?.status === 500) {
+        toast.error("Internal server error");
+      } else if (error?.response?.status === 503) {
+        toast.error("Service unavailable");
       }
     } finally {
       setIsLoading(false);
@@ -113,7 +124,6 @@ const onSubmit = async (values: FormValues) => {
         </div>
         {currentQuery && <QueryBubble />}
         {/* {currentQuery && <SelectMoreBubble />} */}
-        <div>{selectedSongs.length}</div>
         {songs && <CreateItems />}
       </div>
     </div>

@@ -3,8 +3,8 @@
 import React from "react";
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { Zap } from "lucide-react";
 
 // Hooks
 import { useCreatePage } from "./CreatePageContext";
@@ -17,7 +17,7 @@ const CreateForm = ({ form, onSubmit }) => {
     setCurrentQuery,
   } = useCreatePage();
 
-  let buttonText = currentQuery ? "Modify your Vybe" : "Generate Vybe";
+  let buttonText = currentQuery ? "Modify your Vybe" : "Generate New Vybe";
   buttonText = isLoading ? "Generating..." : buttonText;
   if (selectedSongs.length > 0) {
     buttonText = `More Like Selected (${selectedSongs.length})`;
@@ -46,8 +46,9 @@ const CreateForm = ({ form, onSubmit }) => {
           )}
         />
         {/* ... Add other form fields (amount, resolution) here */}
-          <Button className="text-lg col-span-12 lg:col-span-4 w-full" disabled={isLoading}>
+          <Button className="text-lg col-span-12 lg:col-span-4 w-full" variant="premium" disabled={isLoading}>
               {buttonText}
+              {!isLoading ? <Zap className="w-4 h-4 ml-2 fill-white"/> : null}
           </Button>
       </form>
     </Form>
