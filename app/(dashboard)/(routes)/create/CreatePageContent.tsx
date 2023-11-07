@@ -11,15 +11,16 @@ import { useCreatePage } from "./CreatePageContext";
 import CreateForm from "./CreateForm";
 import CreateItems from "./CreateItems";
 import QueryBubble from "./QueryBubble";
+import SelectMoreBubble from "@/components/select-more-bubble";
+import AddToSpotify from "@/components/add-to-spotify";
 
 // Utils and Constants
 import { initialFetchSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import BackgroundSVG from "@/components/background-svg";
 
-// Types
-import { AxiosError } from 'axios';
 
 const CreatePageContent = () => {
   const {
@@ -115,16 +116,27 @@ const onSubmit = async (values: FormValues) => {
 
   return (
     <div>
+      {/* <div className="w-screen h-screen"> */}
+        <BackgroundSVG />
+      {/* </div> */}
       <div className="px-4 lg:px-8">
         <div>
-          <CreateForm
-            form={form}
-            onSubmit={selectedSongs.length > 0 ? onSubmitModify : onSubmit}
-          />
+          <div>
+            <CreateForm
+              form={form}
+              onSubmit={selectedSongs.length > 0 ? onSubmitModify : onSubmit}
+            />
+          </div>
+          <div className="w-full">
+            <div className="flex-row my-10">
+              {currentQuery && selectedSongs.length === 0 && <QueryBubble />}
+              {currentQuery && selectedSongs.length > 0 && <SelectMoreBubble /> } 
+              <AddToSpotify />
+              </div>
+          </div>
         </div>
-        {currentQuery && <QueryBubble />}
-        {/* {currentQuery && <SelectMoreBubble />} */}
         {songs && <CreateItems />}
+
       </div>
     </div>
   );

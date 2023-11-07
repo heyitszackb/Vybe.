@@ -1,11 +1,14 @@
-import { PromptTemplate } from "langchain/prompts";
-import { VybeError } from "@/lib/TextToSpotifySongListConverter/types"
+
+// Types
+import { VybeError, GPTVersion, GPT_VERSIONS, UserInputSchema } from "@/lib/TextToSpotifySongListConverter/types"
+
+// Utils
 import { handleModelCall } from "@/lib/TextToSpotifySongListConverter/langchain-helpers";
 import { StructuredOutputParser } from "langchain/output_parsers";
-import { UserInputSchema } from "@/lib/TextToSpotifySongListConverter/types";
+import { PromptTemplate } from "langchain/prompts";
 
 
-export default async function userPromptVerifier(userInput: string): Promise<string | VybeError> {
+export default async function userPromptVerifier(userInput: string, model: GPTVersion): Promise<string | VybeError> {
     const instructions = `You are in charge of validating natural language inputs to my new AI application. For context, my application turns natural language inputs into Spotify playlists that match the input mood/vibe/setting/scene. Example inputs that my application might take are:
     "Chill christian vibes"
     "Summer breeze walking at 6:00am sun rising acoustic"

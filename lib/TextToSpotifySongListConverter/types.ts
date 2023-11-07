@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+enum GPT_VERSIONS {
+  GPT3 = "gpt-3.5-turbo",
+  GPT4 = "gpt-4-1106-preview",
+  DUMMY = "dummy",
+}
+
+type GPTVersion = GPT_VERSIONS.GPT3 | GPT_VERSIONS.GPT4 | GPT_VERSIONS.DUMMY;
+
+export type { GPTVersion };
+export { GPT_VERSIONS };
+
 export const SongSchema = z.object({
   artists: z.array(z.string().min(1)).nonempty().describe("list of artists"),
   song_name: z.string().min(1).describe("name of the song"),
@@ -84,6 +95,7 @@ class VybeSong {
   isExplicit: boolean;
   genres: string[];
   spotifyUrl: string;
+
 
   constructor(
       name: string,

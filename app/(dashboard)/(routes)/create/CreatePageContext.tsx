@@ -3,6 +3,9 @@ import { VybeSong } from '@/lib/TextToSpotifySongListConverter/types';
 // Types
 import React, { createContext, useContext, useState } from 'react';
 
+// Utils
+import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+
 type CreatePageContextType = {
   currentPage: number;
   loggedInUser: number | null;
@@ -11,6 +14,7 @@ type CreatePageContextType = {
   isError: boolean;
   songs: VybeSong[];
   selectedSongs: VybeSong[];
+  sdk: SpotifyApi;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   setLoggedInUser: React.Dispatch<React.SetStateAction<number | null>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,7 +34,8 @@ export const CreatePageProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [songs, setSongs] = useState<VybeSong[]>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [selectedSongs, setSelectedSongs] = useState<VybeSong[]>([]);
-
+  const sdk = SpotifyApi.withUserAuthorization("f00473afeb904a4aacb6cd9330966b0c", "http://localhost:3000/create",["user-read-private","user-read-email","playlist-modify-public","playlist-modify-private","user-read-playback-state"]);
+  
   return (
     <CreatePageContext.Provider value={{
       currentPage,
@@ -40,6 +45,7 @@ export const CreatePageProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       songs,
       isError,
       selectedSongs,
+      sdk,
       setCurrentPage,
       setLoggedInUser,
       setIsLoading,

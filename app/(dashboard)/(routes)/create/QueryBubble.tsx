@@ -23,10 +23,11 @@ const QueryBubble = () => {
 
     return (
         <div 
-            className="relative bg-gray-200 hover:bg-gray-300 hover:shadow-md py-2 px-4 my-8 rounded-3xl inline-block transition duration-100"
+            className={`max-w-[75%] relative bg-gray-200 hover:bg-gray-300 hover:shadow-md py-2 px-4 rounded-3xl inline-block transition duration-100 overflow-hidden`}
+            style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
         >
             <div className={"flex items-center"}>
-                <div className="mr-2">{currentQuery}</div>
+                <div className="mr-2 truncate">{currentQuery}</div>
                 <div className="w-6 h-6">
                     <Undo2 className="cursor-pointer" onClick={() => handleUndoClick()}/>
                 </div>

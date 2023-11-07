@@ -28,7 +28,7 @@ const CreateForm = ({ form, onSubmit }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="rounded-lg border w-full pb-3 pt-3 px-3 focus-within:shadow-sm grid grid-cols-12 gap-2"
+        className="rounded-lg bg-white border w-full pb-3 pt-3 px-3 focus-within:shadow-sm grid grid-cols-12 gap-2"
       >
         <FormField
           name="prompt"
