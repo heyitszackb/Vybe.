@@ -8,8 +8,6 @@ import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
 import { PromptError } from "@/components/prompt-error";
 import { SongGrid } from "@/components/song-grid";
-import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import {Switch} from "@nextui-org/switch";
 
 // Hooks
 import { useCreatePage } from "./CreatePageContext";

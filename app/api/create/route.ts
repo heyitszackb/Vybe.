@@ -1,8 +1,12 @@
+
+// Utils
 import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server";
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 import textToSpotifySongListConverter from "@/lib/TextToSpotifySongListConverter/text-to-spotify-song-list-converter";
-import { VybeError } from "@/lib/TextToSpotifySongListConverter/types";
+
+// Types
+import { VybeError, GPTVersion, GPT_VERSIONS } from "@/lib/TextToSpotifySongListConverter/types";
 
 export async function POST(
     req: Request,
@@ -10,7 +14,7 @@ export async function POST(
     try {
         const { userId } = auth();
         const body = await req.json();
-        const { prompt } = body;
+        const { prompt, userQuery } = body;
 
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 })
@@ -25,7 +29,7 @@ export async function POST(
 
 
         await increaseApiLimit();
-        const songs = await textToSpotifySongListConverter(prompt);
+        const songs = await textToSpotifySongListConverter(prompt, GPT_VERSIONS.GPT3);
         if (songs instanceof VybeError) {
             return new NextResponse(songs.reason + songs.input, { status: parseInt(songs.errorCode)})
         }

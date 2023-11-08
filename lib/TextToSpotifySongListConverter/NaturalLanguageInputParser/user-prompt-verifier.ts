@@ -9,14 +9,18 @@ import { PromptTemplate } from "langchain/prompts";
 
 
 export default async function userPromptVerifier(userInput: string, model: GPTVersion): Promise<string | VybeError> {
-    const instructions = `You are in charge of validating natural language inputs to my new AI application. For context, my application turns natural language inputs into Spotify playlists that match the input mood/vibe/setting/scene. Example inputs that my application might take are:
+    const instructions = `You are in charge of validating natural language inputs to my new AI application. For context, my application turns natural language inputs into Spotify playlists that match the input mood/vibe/setting/scene. Users may also modify existing playlists. You are in charge of validating all prompts, prompts that modify existing playlists or prompts that create new playlists. Example inputs that my application might take are:
     "Chill christian vibes"
     "Summer breeze walking at 6:00am sun rising acoustic"
+    "Songs like the below, but more fun and frilly"
+    "I really like these songs, but they are not exactly what I am looking for. Please respond with songs that are much more upbeat than these."
+    "More like these, but less energetic"
     "Mt everest and it's freezing but I'm so happy because I like the view"
     "Guitar"
     "Hype like tobyMac but more chill"
     "intense nerf battle"
     "just proposed to my girlfriend in the forst in december and she said yes"
+    "I like these songs, but the ones that are not by tobyMac are too chill. I want more like the tobyMac songs, but less intense."
 
     My application will turn these into real playlists. My application can only turn real moods/vibes into playlists, however, and will break if something bad, malicious, rude, exploiting, sexual, or especially nonsensical is entered into the application. For example, the following prompts do not make sense because they are not moods or vibes:
     "apple" (random)

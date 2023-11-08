@@ -1,9 +1,22 @@
 import * as z from "zod";
 
+const VybeSong = z.object({
+    name: z.string(),
+    uri: z.string(),
+    artists: z.array(z.string()),
+    previewUrl: z.string(),
+    albumName: z.string(),
+    imageUrl: z.string(),
+    isExplicit: z.boolean(),
+    genres: z.array(z.string()),
+    spotifyUrl: z.string(),
+  });
+
 export const initialFetchSchema = z.object({
     prompt: z.string().min(0, {
         message: "Prompt is required",
     }),
+    currentSongs: z.array(VybeSong),
     amount: z.string().min(1),
     resolution: z.string().min(1),
 })

@@ -21,6 +21,9 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import BackgroundSVG from "@/components/background-svg";
 
+// Types
+import { VybeSong } from "@/lib/TextToSpotifySongListConverter/types";
+
 
 const CreatePageContent = () => {
   const {
@@ -40,6 +43,7 @@ const CreatePageContent = () => {
     resolver: zodResolver(initialFetchSchema),
     defaultValues: {
       prompt: "",
+      currentSongs: [],
       amount: "1",
       resolution: "512x512",
     },
@@ -51,6 +55,7 @@ const CreatePageContent = () => {
 
 interface FormValues {
     prompt: string;
+    currentSongs: VybeSong[];
     amount: string;
     resolution: string;
 }
@@ -62,7 +67,11 @@ const onSubmit = async (values: FormValues) => {
       setIsError(false);
       setSongs([]);
       setCurrentQuery(values.prompt);
-      const response = await axios.post("/api/create", values);
+      
+      const response = await axios.post("/api/create", {
+        songs: songs,
+        values: values
+      });
 
       setSongs(response.data);
 
@@ -131,7 +140,7 @@ const onSubmit = async (values: FormValues) => {
             <div className="flex-row my-10">
               {currentQuery && selectedSongs.length === 0 && <QueryBubble />}
               {currentQuery && selectedSongs.length > 0 && <SelectMoreBubble /> } 
-              <AddToSpotify />
+              {currentQuery && songs.length > 0 && <AddToSpotify />}
               </div>
           </div>
         </div>
